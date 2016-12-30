@@ -1,3 +1,6 @@
+import random
+import math
+
 def moon():
     masa_projektila = 1000 #kg
     poluprecnik_projektila = 1 #m
