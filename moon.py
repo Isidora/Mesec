@@ -1,7 +1,7 @@
 def moon():
     masa_projektila = 1000 #kg
     poluprecnik_projektila = 1 #m
-    pocetna_sila = 4*10**6b #N
+    pocetna_sila = 4*10**6 #N
     vreme = 30 #s
     #pocetna sila deluje na projektil 30 s
     orbita_meseca = 384405000 #m (to je zapravo udaljenost o zemlji)
