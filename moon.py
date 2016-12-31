@@ -7,14 +7,16 @@ def moon():
     pocetna_sila = 4*10**6 #N
     vreme = 30 #s
     #pocetna sila deluje na projektil 30 s
-    orbita_meseca = 384405000 #m (to je zapravo udaljenost o zemlji)
+    orbita_meseca = 384405000 #m (to je zapravo udaljenost od zemlje)
     poluprecnik_zemlje = 6378000 #m
     masa_zemlje = random.gauss(6*10**24, 0.1) #kg
     poluprecnik_meseca = 1738000 #m
     masa_meseca = random.gauss(7.3*10**22,0.1) #kg
    
-    #da li da napisemo u funkciji izracunavanje sile otpora vazduha?
-    # u random.gauss prva vrednost je srednja vrednost a druga standardna devijacija. Ubacila sam u procentima, nisam sigurna da li je to dobro.
+    #da li da napisemo u posebnoj funkciji izracunavanje sile otpora vazduha?
+    # u random.gauss prvi parametar je srednja vrednost a drugi standardna devijacija. Ubacila sam standardnu devijaciju
+    # u procentima, nisam sigurna da li je to dobro.
+    
     C_d = 0.5 #drag coefficient za sferu
     povrsina_projektila = 4 * poluprecnik_projektila**2 * math.pi
     alfa1 = random.uniform(2, 2.5)#uniformna raspodela od 2 do 2.5
