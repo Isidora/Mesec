@@ -2,6 +2,9 @@ import math
 import random
 
 def moon():
+#####################################################################
+##  DEFINISANJE PARAMETARA
+#####################################################################
     masa_projektila = 1000 #kg
     poluprecnik_projektila = 1 #m
     pocetna_sila = 4*10**6 #N
@@ -51,4 +54,8 @@ def moon():
 
     # treba jos ubaciti i uncertainty oko pozicije meseca u trenutku ispaljivanja
     F_otpora = 1/2 * ro * brzina_projektila**alfa * C_d * povrsina_projektila
+    
+#####################################################################
+##  RACUNANJE SILA KOJE DELUJU NA SISTEM
+#####################################################################
     
