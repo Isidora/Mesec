@@ -60,7 +60,6 @@ def moon():
 def silaOtpora(visina, C_d, poluprecnik_projektila, brzina projektila):
     '''Funkcija ce primiti visinu i brzinu projektila u svakom trenutku kao argumente, to cemo racunati u nekoj drugoj funkciji.
     Kod je isti kao ovo sto si ti napisala samo nisam siguran za ovo alfa dal treba uniform pa opet Gauss ili samo ovako??'''
-    C_d = 0.5 #drag coefficient za sferu
     povrsina_projektila = 4 * poluprecnik_projektila**2 * math.pi
     alfa = random.uniform(2, 2.5)#uniformna raspodela od 2 do 2.5
     if visina >= 0 and visina < 5000:
@@ -89,6 +88,8 @@ def silaOtpora(visina, C_d, poluprecnik_projektila, brzina projektila):
         ro = 1
     F_otpora = 1/2 * ro * brzina_projektila**alfa * C_d * povrsina_projektila
     return F_otpora
+
+#########GRAVITACIONALNA SILA OD PLANETE I MESECA NA PROJEKTIL##########################
 
 def distanca(Dict1, Dict2):
     '''Racuna daljinu izmedju dva Dicta za polazaj
