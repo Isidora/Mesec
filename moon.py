@@ -92,5 +92,5 @@ def silaPlanete(gamma, masa_zemlje, masa_projektila, pozicija_zemlje, pozicija_p
 #####################################################################
 
 gamma = 6.674*10**(-11) # N(m/kg)^2 - da li ovo treba nekako da korigujemo?
-gravitaciona_sila = gamma * masa_zemlje * masa_meseca / orbita_meseca**2
+
     
