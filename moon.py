@@ -24,36 +24,10 @@ def moon():
     povrsina_projektila = 4 * poluprecnik_projektila**2 * math.pi
     alfa1 = random.uniform(2, 2.5)#uniformna raspodela od 2 do 2.5
     alfa = random.gauss(alfa1, 0.1) #Zasto dva puta racunamo alpha?? Zar nije dovoljno da koristimo samo uniform razpodelu?
-    ro = 1
-    if visina >= 0 and visina < 5000:
-        ro = random.gauss(1.22500, 0.1) #kg/m^3
-    elif visina >= 5000 and visina < 10000:
-        ro = random.gauss(0.736116, 0.1) #kg/m^3
-    elif visina >= 10000 and visina < 15000:
-        ro = random.gauss(0.412707, 0.1) #kg/m^3
-    elif visina >= 15000 and visina < 20000:
-        ro = random.gauss(0.193674, 0.1) #kg/m^3
-    elif visina >= 20000 and visina < 25000:
-        ro = random.gauss(0.0880349, 0.1) #kg/m^3
-    elif visina >= 25000 and visina < 30000:
-        ro = random.gauss(0.0394658, 0.1) #kg/m^3
-    elif visina >= 30000 and visina < 35000:
-        ro = random.gauss(0.0180119, 0.1) #kg/m^3
-    elif visina >= 35000 and visina < 40000:
-        ro = random.gauss(0.00821392, 0.1) #kg/m^3
-    elif visina >= 40000 and visina < 45000:
-        ro = random.gauss(0.00385101, 0.1) #kg/m^3
-    elif visina >= 45000 and visina < 50000:
-        ro = random.gauss(0.00188129, 0.1) #kg/m^3
-    elif visina = 50000:
-        ro = random.gauss(0.0009777525, 0.1)
-    else:
-        ro = 1
+
     # brzina_projektila = ?
     # visina = ?
-
     # treba jos ubaciti i uncertainty oko pozicije meseca u trenutku ispaljivanja
-    F_otpora = 1/2 * ro * brzina_projektila**alfa * C_d * povrsina_projektila
 
 #Mozda da napisemo funkciju koja odvojeno odredjuje sile ovako?#
 ##########################FUNKCIJA ZA OTPOR########################
@@ -94,7 +68,7 @@ def silaOtpora(visina, C_d, poluprecnik_projektila, brzina projektila):
 def distanca(Dict1, Dict2):
     '''Racuna daljinu izmedju dva Dicta za polazaj
     '''
-    xDistanca = (Dict1['xPoz'] - Dict2['xPoz']) 
+    xDistance = (Dict1['xPoz'] - Dict2['xPoz']) 
     yDistance = (Dict1['yPoz'] - Dict2['yPoz'])  
     daljina = math.sqrt(xDistance**2 + yDistance**2)                    
     return daljina
@@ -111,9 +85,7 @@ def silaPlanete(gamma, masa_zemlje, masa_projektila, pozicija_zemlje, pozicija_p
     yF_planete = xF_planete = gamma*masa_zemlje*masa_projektila*pozicija_projektila['yPoz']/daljina^3
     return {'xSila':xF_planete, 'ySila':yF_planete}
 
-#Istu foru uradimo za mesec. Jel se slazes sa ovom implementacijom u Diktu? i jel ti jasno kako racunamo silu u x-y koordinatima?
-    
-    
+#Istu foru uradimo za mesec. Jel se slazes sa ovom implementacijom u Diktu? i jel ti jasno kako racunamo silu u x-y koordinatima       
     
 #####################################################################
 ##  RACUNANJE SILA KOJE DELUJU NA SISTEM
