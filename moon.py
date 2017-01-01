@@ -15,16 +15,14 @@ def moon():
     masa_zemlje = random.gauss(6*10**24, 0.1) #kg
     poluprecnik_meseca = 1738000 #m
     masa_meseca = random.gauss(7.3*10**22,0.1) #kg
-   
-    #da li da napisemo u posebnoj funkciji izracunavanje sile otpora vazduha?
+    
     # u random.gauss prvi parametar je srednja vrednost a drugi standardna devijacija. Ubacila sam standardnu devijaciju
     # u procentima, nisam sigurna da li je to dobro.
     
     C_d = 0.5 #drag coefficient za sferu
     povrsina_projektila = 4 * poluprecnik_projektila**2 * math.pi
-    alfa1 = random.uniform(2, 2.5)#uniformna raspodela od 2 do 2.5
-    alfa = random.gauss(alfa1, 0.1) #Zasto dva puta racunamo alpha?? Zar nije dovoljno da koristimo samo uniform razpodelu?
-
+    alfa = random.uniform(2, 2.5)#uniformna raspodela od 2 do 2.5
+    
     # brzina_projektila = ?
     # visina = ?
     # treba jos ubaciti i uncertainty oko pozicije meseca u trenutku ispaljivanja
@@ -79,6 +77,7 @@ def silaPlanete(gamma, masa_zemlje, masa_projektila, pozicija_zemlje, pozicija_p
     prozicija_zemlje onda moze biti dict {xPoz:broj, yPoz: drugi broj} i isto tako pozicija projektila
     Zamislimo ih kao vektore u 2-D prostoru - pozicija Zemlje ce biti (0, 0) a pozicija projektila njegov polazaj u tom sistemu
     '''
+    gamma = 6.674*10**(-11) # N(m/kg)^2 - da li ovo treba nekako da korigujemo?
     daljina = distanca(pozicija_zemlje, pozicija_projektila)
     #Ovo je vektorska verzija onog zakona F =Gmm/r^2 
     xF_planete = gamma*masa_zemlje*masa_projektila*pozicija_projektila['xPoz']/daljina^3
@@ -86,11 +85,8 @@ def silaPlanete(gamma, masa_zemlje, masa_projektila, pozicija_zemlje, pozicija_p
     return {'xSila':xF_planete, 'ySila':yF_planete}
 
 #Istu foru uradimo za mesec. Jel se slazes sa ovom implementacijom u Diktu? i jel ti jasno kako racunamo silu u x-y koordinatima       
-    
-#####################################################################
-##  RACUNANJE SILA KOJE DELUJU NA SISTEM
-#####################################################################
 
-gamma = 6.674*10**(-11) # N(m/kg)^2 - da li ovo treba nekako da korigujemo?
+
+
 
     
