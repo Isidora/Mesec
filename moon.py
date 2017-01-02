@@ -2,7 +2,6 @@
 Ovo je sad prilicno haoticno. Predlazem da sredimo ovaj deo koda i sve lepo debagujemo da se posle ne bismo pogubili.
 Hocemo ove promenljive iz moon() da definisemo kao globalne ili da ostavimo ovako u funkcijici?
 '''
-
 import math
 import random
 
@@ -12,9 +11,13 @@ import random
 def moon():
     masa_projektila = 1000 #kg
     poluprecnik_projektila = 1 #m
-    pocetna_sila = 4*10**6 #N
-    vreme = 30 #s
-    #pocetna sila deluje na projektil 30 s
+    #pocetna_sila = 4*10**6 #N
+    #vreme = 30 #s
+    '''
+    Iskrljala sam rucno koju brzinu razvije projektil za 30s i koji put za t vreme predje, proveri na drive-u.
+    '''
+    pocetna_brzina_projektila = 12000 #m/s
+    pocetna_visina_projektila = 18000 #m
     orbita_meseca = 384405000 #m (to je zapravo udaljenost od zemlje)
     poluprecnik_zemlje = 6378000 #m
     masa_zemlje = random.gauss(6*10**24, 0.1) #kg
@@ -27,6 +30,7 @@ def moon():
     C_d = 0.5 #drag coefficient za sferu
     povrsina_projektila = 4 * poluprecnik_projektila**2 * math.pi
     alfa = random.uniform(2, 2.5)#uniformna raspodela od 2 do 2.5
+    pozicija_zemlje = {'xPoz':0, 'yPoz':0}
     
     # brzina_projektila = ?
     # visina = ?
@@ -86,16 +90,18 @@ def silaPlanete(gamma, masa_zemlje, masa_projektila, pozicija_zemlje, pozicija_p
     daljina = distanca(pozicija_zemlje, pozicija_projektila)
     #Ovo je vektorska verzija onog zakona F =Gmm/r^2 
     xF_planete = gamma*masa_zemlje*masa_projektila*pozicija_projektila['xPoz']/daljina^3
-    yF_planete = xF_planete = gamma*masa_zemlje*masa_projektila*pozicija_projektila['yPoz']/daljina^3
+    yF_planete = xF_planete = gamma*masa_zemlje*masa_projektila*pozicija_projektila['yPoz']/daljina^3 
     return {'xSila':xF_planete, 'ySila':yF_planete}
 
 ''' Implementiramo kruzno kretanje meseca. U svakom trenutku bi trebalo da vazi x^2+y^2 = R^2 gde je R poluprecnik orbite.
 Posto je R konstantno, moj predlog je da prvo izgenerisemo x koje ce biti odgovarajuceg reda velicine i onda odredimo po tome
-koliko ce biti y. Plizic proveri ovo sa recnicima sto sam radila'''
+koliko ce biti y. Plizic proveri ovo sa recnicima sto sam radila. Btw, pozicija zemlje je isto neki recnik koji moze da nam bude global,
+tako? To sam ubacila gore na pocetku.
+'''
 
-def kretanjeMeseca():
+def pozicija_meseca():
     xMeseca = random.gauss(orbita_meseca, 0.1)
     yMeseca = math.sqrt(orbita_meseca**2 - xMeseca**2)
-    return {'xMeseca':xMeseca, 'yMeseca':yMeseca}
+    return {'xPoz':xMeseca, 'yPoz':yMeseca}
     
 
