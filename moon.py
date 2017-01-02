@@ -1,3 +1,8 @@
+''' 
+Ovo je sad prilicno haoticno. Predlazem da sredimo ovaj deo koda i sve lepo debagujemo da se posle ne bismo pogubili.
+Hocemo ove promenljive iz moon() da definisemo kao globalne ili da ostavimo ovako u funkcijici?
+'''
+
 import math
 import random
 
@@ -84,9 +89,13 @@ def silaPlanete(gamma, masa_zemlje, masa_projektila, pozicija_zemlje, pozicija_p
     yF_planete = xF_planete = gamma*masa_zemlje*masa_projektila*pozicija_projektila['yPoz']/daljina^3
     return {'xSila':xF_planete, 'ySila':yF_planete}
 
-#Istu foru uradimo za mesec. Jel se slazes sa ovom implementacijom u Diktu? i jel ti jasno kako racunamo silu u x-y koordinatima       
+''' Implementiramo kruzno kretanje meseca. U svakom trenutku bi trebalo da vazi x^2+y^2 = R^2 gde je R poluprecnik orbite.
+Posto je R konstantno, moj predlog je da prvo izgenerisemo x koje ce biti odgovarajuceg reda velicine i onda odredimo po tome
+koliko ce biti y. Plizic proveri ovo sa recnicima sto sam radila'''
 
-
-
-
+def kretanjeMeseca():
+    xMeseca = random.gauss(orbita_meseca, 0.1)
+    yMeseca = math.sqrt(orbita_meseca**2 - xMeseca**2)
+    return {'xMeseca':xMeseca, 'yMeseca':yMeseca}
     
+
