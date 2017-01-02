@@ -1,10 +1,10 @@
 import math
 import random
 
-def moon():
 #####################################################################
 ##  DEFINISANJE PARAMETARA
 #####################################################################
+def moon():
     masa_projektila = 1000 #kg
     poluprecnik_projektila = 1 #m
     pocetna_sila = 4*10**6 #N
