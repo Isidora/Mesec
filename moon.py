@@ -8,7 +8,9 @@ import random
 #####################################################################
 ##  DEFINISANJE PARAMETARA
 #####################################################################
-def moon():
+def runModuleic():
+    '''U ovoj funkciji cemo definisati parametre i koristicemo je da ranujemo simulaciju jednom kad su sve funkcije na mestu. 
+    za sada neka stoje definisane vrednoti ovde. Slobodno promeni ime funkcije ako zelis :D'''
     masa_projektila = 1000 #kg
     poluprecnik_projektila = 1 #m
     #pocetna_sila = 4*10**6 #N
@@ -16,8 +18,9 @@ def moon():
     '''
     Iskrljala sam rucno koju brzinu razvije projektil za 30s i koji put za t vreme predje, proveri na drive-u.
     '''
-    pocetna_brzina_projektila = 12000 #m/s
-    pocetna_visina_projektila = 18000 #m
+    #Slazem se sa racunanjem ali zasto u prvih 30s zanemarimo otpor i gravitaciju? Jel treba tako?
+    pocetna_brzina_projektila = 12000 #m/s               
+    pocetna_visina_projektila = 18000 #m                
     orbita_meseca = 384405000 #m (to je zapravo udaljenost od zemlje)
     poluprecnik_zemlje = 6378000 #m
     masa_zemlje = random.gauss(6*10**24, 0.1) #kg
@@ -25,24 +28,23 @@ def moon():
     masa_meseca = random.gauss(7.3*10**22,0.1) #kg
     
     # u random.gauss prvi parametar je srednja vrednost a drugi standardna devijacija. Ubacila sam standardnu devijaciju
-    # u procentima, nisam sigurna da li je to dobro.
+    # u procentima, nisam sigurna da li je to dobro. OVO CEMO PROVERITI
     
     C_d = 0.5 #drag coefficient za sferu
     povrsina_projektila = 4 * poluprecnik_projektila**2 * math.pi
     alfa = random.uniform(2, 2.5)#uniformna raspodela od 2 do 2.5
     pozicija_zemlje = {'xPoz':0, 'yPoz':0}
-    
-    # brzina_projektila = ?
-    # visina = ?
-    # treba jos ubaciti i uncertainty oko pozicije meseca u trenutku ispaljivanja
+    gamma = 6.674*10**(-11) # N(m/kg)^2 
+    return None
 
-#Mozda da napisemo funkciju koja odvojeno odredjuje sile ovako?#
-##########################FUNKCIJA ZA OTPOR########################
-def silaOtpora(visina, C_d, poluprecnik_projektila, brzina projektila):
+
+#####################################################################
+##  RACUNANJE SILA
+#####################################################################
+def silaOtpora(visina, C_d, poluprecnik_projektila, brzina_projektila, alfa):
     '''Funkcija ce primiti visinu i brzinu projektila u svakom trenutku kao argumente, to cemo racunati u nekoj drugoj funkciji.
-    Kod je isti kao ovo sto si ti napisala samo nisam siguran za ovo alfa dal treba uniform pa opet Gauss ili samo ovako??'''
+    '''
     povrsina_projektila = 4 * poluprecnik_projektila**2 * math.pi
-    alfa = random.uniform(2, 2.5)#uniformna raspodela od 2 do 2.5
     if visina >= 0 and visina < 5000:
         ro = random.gauss(1.22500, 0.1) #kg/m^3
     elif visina >= 5000 and visina < 10000:
@@ -70,8 +72,6 @@ def silaOtpora(visina, C_d, poluprecnik_projektila, brzina projektila):
     F_otpora = 1/2 * ro * brzina_projektila**alfa * C_d * povrsina_projektila
     return F_otpora
 
-#########GRAVITACIONALNA SILA OD PLANETE I MESECA NA PROJEKTIL##########################
-
 def distanca(Dict1, Dict2):
     '''Racuna daljinu izmedju dva Dicta za polazaj
     '''
@@ -80,18 +80,15 @@ def distanca(Dict1, Dict2):
     daljina = math.sqrt(xDistance**2 + yDistance**2)                    
     return daljina
 
-def silaPlanete(gamma, masa_zemlje, masa_projektila, pozicija_zemlje, pozicija_projektila):
-    '''Ako radimo u dve dimenzije, trebace nam polazaji i brzine (verovatno i sile) u x-y koordinatima, mislim da je najbolje 
-    uraditi to u dict tipa {'xSila':broj, 'ySila': drugi broj}. Predpostavicu da cemo tako raditi za sada ali mozemo izmeniti
-    prozicija_zemlje onda moze biti dict {xPoz:broj, yPoz: drugi broj} i isto tako pozicija projektila
-    Zamislimo ih kao vektore u 2-D prostoru - pozicija Zemlje ce biti (0, 0) a pozicija projektila njegov polazaj u tom sistemu
+def silaGravitacije(gamma, masa_jedan, masa_dva, pozicija_jedan, pozicija_dva):
+    '''Ovu funkciju cemo da koristimo za sve gravitacionalne sile, prilagodio sam da moze da se koristi izmedju bilo 
+    koje dve tacke jedan i dva
     '''
-    gamma = 6.674*10**(-11) # N(m/kg)^2 - da li ovo treba nekako da korigujemo?
-    daljina = distanca(pozicija_zemlje, pozicija_projektila)
+    daljina = distanca(pozicija_jedan, pozicija_dva)
     #Ovo je vektorska verzija onog zakona F =Gmm/r^2 
-    xF_planete = gamma*masa_zemlje*masa_projektila*pozicija_projektila['xPoz']/daljina^3
-    yF_planete = xF_planete = gamma*masa_zemlje*masa_projektila*pozicija_projektila['yPoz']/daljina^3 
-    return {'xSila':xF_planete, 'ySila':yF_planete}
+    xF = gamma*masa_jedan*masa_dva*(pozicija_dva['xPoz'] - pozicija_jedan['xPoz']/daljina^3
+    yF = gamma*masa_jedan*masa_dva*(pozicija_dva['yPoz'] - pozicija_jedan['yPoz'])/daljina^3 
+    return {'xSila':xF, 'ySila':yF}
 
 ''' Implementiramo kruzno kretanje meseca. U svakom trenutku bi trebalo da vazi x^2+y^2 = R^2 gde je R poluprecnik orbite.
 Posto je R konstantno, moj predlog je da prvo izgenerisemo x koje ce biti odgovarajuceg reda velicine i onda odredimo po tome
@@ -99,9 +96,24 @@ koliko ce biti y. Plizic proveri ovo sa recnicima sto sam radila. Btw, pozicija 
 tako? To sam ubacila gore na pocetku.
 '''
 
-def pozicija_meseca():
+#####################################################################
+##  Kretanje meseca
+#####################################################################                                    
+def pocetna_pozicija_meseca():
     xMeseca = random.gauss(orbita_meseca, 0.1)
     yMeseca = math.sqrt(orbita_meseca**2 - xMeseca**2)
+    #Ova implementacija mi deluje problematicna - zar necbismo u nekim trenucima dobijali sqrt negativnog broja??                                    
     return {'xPoz':xMeseca, 'yPoz':yMeseca}
+
+def brzina_meseca(gamma, masa_zemlje, orbita_meseca, pozicija_meseca):
+    '''Objasnjenje za ovo cu napasiti i nakaciti na driveic sto pre'''
+    brzina_meseca = math.sqrt(gamma*masa_zemlje/orbita_meseca)
+    xPoz = pozicija_meseca['xPoz']
+    yPoz = pozicija_meseca['yPoz']
+    ugao_meseca = math.atan(xPoz/yPoz)                                    
+    xBrzina = brzina_meseca*math.sin(ugao_meseca)                                
+    yBrzina = brzina_meseca*math.cos(ugao_meseca)                                
+    return {'xBrzina':xBrzina, 'yBrzina': yBrzina}                                
+                                    
     
 
