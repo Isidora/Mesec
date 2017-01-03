@@ -11,6 +11,10 @@ import random
 def runModuleic():
     '''U ovoj funkciji cemo definisati parametre i koristicemo je da ranujemo simulaciju jednom kad su sve funkcije na mestu. 
     za sada neka stoje definisane vrednoti ovde. Slobodno promeni ime funkcije ako zelis :D'''
+    
+    '''
+    Svidja mi se ime :*
+    '''
     masa_projektila = 1000 #kg
     poluprecnik_projektila = 1 #m
     #pocetna_sila = 4*10**6 #N
