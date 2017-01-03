@@ -132,8 +132,8 @@ def update_mesec(brzina_meseca, pozicija_meseca, time_step):
 ##  Kretanje projektila
 #####################################################################    
 def ubrzanje(masa_zemlje, masa_meseca, masa_projektila, pozicija_zemlje, pozicija_meseca, pozicija_projektila, gamma, C_D, alpha, poluprecnik_projektila, brzina_projektila):
-    silaZemlje(gamma, masa_zemlje, masa_projektila, pozicija_zemlje, pozicija_projektila)
-    silaMeseca(gamma, masa_meseca, masa_projektila, pozicija_meseca, pozicija_projektila)
+    silaZemlje = silaGravitacije(gamma, masa_zemlje, masa_projektila, pozicija_zemlje, pozicija_projektila)
+    silaMeseca = silaGravitacije(gamma, masa_meseca, masa_projektila, pozicija_meseca, pozicija_projektila)
     visina = daljina(pozicija_zemlje, pozicija_projektila)
     silaOtpora = silaOtpora(visina, C_d, poluprecnik_projektila, brzina_projektila, alfa)
     #Ovo je VELICINA sile otpora, treba da ga pomnozimo sa vektorcicem u suprotnom pravcu od brzine projektila??
