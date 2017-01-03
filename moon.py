@@ -86,7 +86,7 @@ def silaGravitacije(gamma, masa_jedan, masa_dva, pozicija_jedan, pozicija_dva):
     '''
     daljina = distanca(pozicija_jedan, pozicija_dva)
     #Ovo je vektorska verzija onog zakona F =Gmm/r^2 
-    xF = gamma*masa_jedan*masa_dva*(pozicija_dva['xPoz'] - pozicija_jedan['xPoz']/daljina^3
+    xF = gamma*masa_jedan*masa_dva*(pozicija_dva['xPoz'] - pozicija_jedan['xPoz'])/daljina^3
     yF = gamma*masa_jedan*masa_dva*(pozicija_dva['yPoz'] - pozicija_jedan['yPoz'])/daljina^3 
     return {'xSila':xF, 'ySila':yF}
 
