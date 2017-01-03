@@ -107,7 +107,8 @@ tako? To sam ubacila gore na pocetku.
 def pocetna_pozicija_meseca():
     xMeseca = random.gauss(orbita_meseca, 0.1)
     yMeseca = math.sqrt(orbita_meseca**2 - xMeseca**2)
-    #Ova implementacija mi deluje problematicna - zar necbismo u nekim trenucima dobijali sqrt negativnog broja??                                    
+    #Ova implementacija mi deluje problematicna - zar necbismo u nekim trenucima dobijali negativan broj?
+    #U pravu si, taj problem se resava ako ubacimo abs pod koren ali i dalje ne znam da li je ideja uopste dobra
     return {'xPoz':xMeseca, 'yPoz':yMeseca}
 
 def brzina_meseca(gamma, masa_zemlje, orbita_meseca, pozicija_meseca, brzina_rotacije):
