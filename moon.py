@@ -26,6 +26,7 @@ def runModuleic():
     masa_zemlje = random.gauss(6*10**24, 0.1) #kg
     poluprecnik_meseca = 1738000 #m
     masa_meseca = random.gauss(7.3*10**22,0.1) #kg
+    brzina_meseca = math.sqrt(gamma*masa_zemlje/orbita_meseca) #Brzina rotacije mesecu - ima objasnjenje na driveu
     
     # u random.gauss prvi parametar je srednja vrednost a drugi standardna devijacija. Ubacila sam standardnu devijaciju
     # u procentima, nisam sigurna da li je to dobro. OVO CEMO PROVERITI
@@ -105,15 +106,22 @@ def pocetna_pozicija_meseca():
     #Ova implementacija mi deluje problematicna - zar necbismo u nekim trenucima dobijali sqrt negativnog broja??                                    
     return {'xPoz':xMeseca, 'yPoz':yMeseca}
 
-def brzina_meseca(gamma, masa_zemlje, orbita_meseca, pozicija_meseca):
+def brzina_meseca(gamma, masa_zemlje, orbita_meseca, pozicija_meseca, brzina_rotacije):
     '''Objasnjenje za ovo cu napasiti i nakaciti na driveic sto pre'''
-    brzina_meseca = math.sqrt(gamma*masa_zemlje/orbita_meseca)
     xPoz = pozicija_meseca['xPoz']
     yPoz = pozicija_meseca['yPoz']
     ugao_meseca = math.atan(xPoz/yPoz)                                    
     xBrzina = brzina_meseca*math.sin(ugao_meseca)                                
     yBrzina = brzina_meseca*math.cos(ugao_meseca)                                
-    return {'xBrzina':xBrzina, 'yBrzina': yBrzina}                                
+    return {'xBrzina':xBrzina, 'yBrzina': yBrzina}      
+
+def update_mesec(brzina_meseca, pozicija_meseca, time_step):
+    '''Funkcija vraca dict sa novom pozicijom meseca, stvaram novi dict svaki put da nebi imali problem 
+    sto mutiramo dinamican podatak
+    '''
+    noviX = pozicija_meseca['xPoz'] + brzina_meseca['xPoz']*time_step
+    noviY = pozicija_meseca['yPoz'] + brzina_meseca['yPoz']*time_step
+    return {'xPoz':noviX, 'yPoz': noviY}
                                     
     
 
