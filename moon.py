@@ -128,5 +128,23 @@ def update_mesec(brzina_meseca, pozicija_meseca, time_step):
     noviY = pozicija_meseca['yPoz'] + brzina_meseca['yPoz']*time_step
     return {'xPoz':noviX, 'yPoz': noviY}
                                     
+ #####################################################################
+##  Kretanje projektila
+#####################################################################    
+def ubrzanje(masa_zemlje, masa_meseca, masa_projektila, pozicija_zemlje, pozicija_meseca, pozicija_projektila, gamma, C_D, alpha, poluprecnik_projektila, brzina_projektila):
+    silaZemlje(gamma, masa_zemlje, masa_projektila, pozicija_zemlje, pozicija_projektila)
+    silaMeseca(gamma, masa_meseca, masa_projektila, pozicija_meseca, pozicija_projektila)
+    visina = daljina(pozicija_zemlje, pozicija_projektila)
+    silaOtpora = silaOtpora(visina, C_d, poluprecnik_projektila, brzina_projektila, alfa)
+    #Ovo je VELICINA sile otpora, treba da ga pomnozimo sa vektorcicem u suprotnom pravcu od brzine projektila??
+    velicinaBrzine = daljina(brzina_projektila, pozicija_zemlje)
+    #ovo mozda deluje cudno ali funkcija 'daljina' samo racuna kroz pitagorinu teoremu i pozicija zemlje nam daje tacku (0,0)
+    xOtpor = silaOtpora*brzina_projektila['xBrzina']/velicinaBrzine
+    yOtpor = silaOtpora*brzina_projektila['yBrzina']/velicinaBrzine
+    xF = silaZemlje['xSila'] + silaMeseca['xSila'] + xOtpor
+    yF = silaZemlje['ySila'] + silaMeseca['ySila'] + yOtpor
+    xUbrzanje = xF/masa_projektila
+    yUbrzanje = yF/masa_projektila
+    return {'xUbrzanje': xUbranje, 'yUbrzanje': yUbranje}
     
-
+    
