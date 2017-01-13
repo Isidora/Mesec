@@ -111,21 +111,21 @@ def pocetna_pozicija_meseca():
     #U pravu si, taj problem se resava ako ubacimo abs pod koren ali i dalje ne znam da li je ideja uopste dobra
     return {'xPoz':xMeseca, 'yPoz':yMeseca}
 
-def brzina_meseca(gamma, masa_zemlje, orbita_meseca, pozicija_meseca, brzina_rotacije):
+def brzina_meseca(pozicija_meseca, brzina_rotacije):
     '''Objasnjenje za ovo cu napasiti i nakaciti na driveic sto pre'''
     xPoz = pozicija_meseca['xPoz']
     yPoz = pozicija_meseca['yPoz']
     ugao_meseca = math.atan(xPoz/yPoz)                                    
-    xBrzina = brzina_meseca*math.sin(ugao_meseca)                                
-    yBrzina = brzina_meseca*math.cos(ugao_meseca)                                
+    xBrzina = brzina_rotacije*math.sin(ugao_meseca)                                
+    yBrzina = brzina_rotacije*math.cos(ugao_meseca)                                
     return {'xBrzina':xBrzina, 'yBrzina': yBrzina}      
 
 def update_mesec(brzina_meseca, pozicija_meseca, time_step):
     '''Funkcija vraca dict sa novom pozicijom meseca, stvaram novi dict svaki put da nebi imali problem 
     sto mutiramo dinamican podatak
     '''
-    noviX = pozicija_meseca['xPoz'] + brzina_meseca['xPoz']*time_step
-    noviY = pozicija_meseca['yPoz'] + brzina_meseca['yPoz']*time_step
+    noviX = pozicija_meseca['xPoz'] + brzina_meseca['xBrzina']*time_step
+    noviY = pozicija_meseca['yPoz'] + brzina_meseca['yBrzina']*time_step
     return {'xPoz':noviX, 'yPoz': noviY}
                                     
  #####################################################################
@@ -146,5 +146,45 @@ def ubrzanje(masa_zemlje, masa_meseca, masa_projektila, pozicija_zemlje, pozicij
     xUbrzanje = xF/masa_projektila
     yUbrzanje = yF/masa_projektila
     return {'xUbrzanje': xUbranje, 'yUbrzanje': yUbranje}
-    
-    
+
+def update_projektil(brzina_projektila, pozicija_projektila, time_step):
+    '''Funkcija vraca dict sa novom pozicijom meseca, stvaram novi dict svaki put da nebi imali problem 
+    sto mutiramo dinamican podatak
+    '''
+    noviX = pozicija_projektila['xPoz'] + brzina_projektila['xBrzina']*time_step
+    noviY = pozicija_projektila['yPoz'] + brzina_projektila['yBrzina']*time_step
+    return {'xPoz':noviX, 'yPoz': noviY}
+
+def update_brzina(ubrzanje_projektila, brzina_projektila, time_step):
+    '''Funkcija vraca dict sa novom pozicijom meseca, stvaram novi dict svaki put da nebi imali problem 
+    sto mutiramo dinamican podatak
+    '''
+    brzinaX = brzina_projektila['xBrzina'] + ubrzanje_projektila['xUbrzanje']*time_step
+    brzinaY = brzina_projektila['yBrzina'] + ubrzanje_projektila['yUbrzanje']*time_step
+    return {'xBrzina':brzinaX, 'yBrzina': brzinaY}
+
+def RK4_projektil(masa_zemlje, masa_meseca, masa_projektila, pozicija_zemlje, pozicija_meseca, pozicija_projektila, gamma, C_D, alpha, poluprecnik_projektila, brzina_projektila, timeStep):
+    j1 = ubrzanje(masa_zemlje, masa_meseca, masa_projektila, pozicija_zemlje, pozicija_meseca, pozicija_projektila, gamma, C_D, alpha, poluprecnik_projektila, brzina_projektila)
+    k1 = brzina_projektila
+    j2 = ubrzanje(masa_zemlje, masa_meseca, masa_projektila, pozicija_zemlje, pozicija_meseca, update_projektil(k1, pozicija_projektila,timeStep/2), gamma, C_D, alpha, poluprecnik_projektila, update_brzina(j1, brzina_projektila, timeStep/2))
+    k2 = update_brzina(j1, brzina_projektila, timeStep/2)
+    j3 = ubrzanje(masa_zemlje, masa_meseca, masa_projektila, pozicija_zemlje, pozicija_meseca, update_projektil(k2, pozicija_projektila,timeStep/2), gamma, C_D, alpha, poluprecnik_projektila, update_brzina(j2, brzina_projektila, timeStep/2))
+    k3 = update_brzina(j2, brzina_projektila, timeStep/2)
+    j4 = ubrzanje(masa_zemlje, masa_meseca, masa_projektila, pozicija_zemlje, pozicija_meseca, update_projektil(k3, pozicija_projektila,timeStep), gamma, C_D, alpha, poluprecnik_projektila, update_brzina(j3, brzina_projektila, timeStep))
+    k4 = update_brzina(j3, brzina_projektila, timeStep)
+    sumaKX = k1['xBrzina'] + 2*k2['xBrzina'] + 2*k3['xBrzina'] + k4['xBrzina']
+    sumaKY = k1['yBrzina'] + 2*k2['yBrzina'] + 2*k3['yBrzina'] + k4['yBrzina']
+    sumaJX = j1['xUbrzanje'] + 2*j2['xUbrzanje'] + 2*j3['xUbrzanje'] + j4['xUbrzanje']
+    sumaJY = j1['yUbrzanje'] + 2*j2['yUbrzanje'] + 2*j3['yUbrzanje'] + j4['yUbrzanje']
+    NoviX = pozicija_projektila['xPoz'] + (timeStep/6)*sumaKX
+    NoviY = pozicija_projektila['yPoz'] + (timeStep/6)*sumaKY
+    brzinaX = brzina_projektila['xBrzina'] + (timeStep/6)*sumaJX
+    brzinaY = brzina_projektila['yBrzina'] + (timeStep/6)*sumaJY
+    novaPozicija = {'xPoz': NoviX, 'yPoz' : NoviY}
+    novaBrzina = {'xBrzina': brzinaX, 'yBrzina' : brzinaY}
+    return {'Brzina': novaBrzina, 'Pozicija': novaPozicija}
+
+
+
+
+
